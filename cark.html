@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Çarkıfelek</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Playfair+Display:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Playfair Display", serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        background-image: url("https://i.ibb.co/Y5jQzSh/wp2641154.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      .wheel-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        background-image: linear-gradient(
+            to bottom right,
+            rgba(0, 0, 0, 0.8),
+            rgba(58, 24, 0, 0.9)
+          ),
+          url("https://i.ibb.co/4tQHjPm/son-1.jpg");
+        background-size: cover;
+        background-position: center;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8),
+          0 0 80px rgba(144, 238, 144, 0.3) inset;
+        position: relative;
+        border: 2px solid rgba(255, 215, 0, 0.15);
+        backdrop-filter: blur(8px);
+        width: 90%;
+        max-width: 500px;
+        transform-style: preserve-3d;
+      }
+
+      .logo {
+        width: 80%;
+        max-width: 200px;
+        height: auto;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 15px rgba(255, 165, 0, 0.5));
+        animation: logoGlow 2s infinite alternate;
+      }
+
+      .canvas-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 1;
+        margin: 0 auto 20px;
+        transform: scale(1);
+        transition: transform 0.3s ease;
+        perspective: 1000px;
+      }
+
+      .canvas-container:hover {
+        transform: scale(1.02) rotateX(2deg) rotateY(2deg);
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+        border: 12px solid #3a1800;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 50% 50%,
+            #4e2000 30%,
+            #3a1800 100%
+          ),
+          repeating-conic-gradient(
+            from 0deg,
+            #ffffff0a 0deg 10deg,
+            #0000000a 10deg 20deg
+          );
+        box-shadow: 0 0 80px rgba(144, 255, 144, 0.3),
+          0 0 50px rgba(0, 0, 0, 0.8) inset;
+        filter: drop-shadow(0 0 25px rgba(144, 238, 144, 0.5));
+        transform-style: preserve-3d;
+        animation: wheelFloat 4s ease-in-out infinite;
+      }
+
+      .pointer {
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 40px solid #e96b24;
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+        animation: pointerGlow 1.5s infinite alternate;
+      }
+
+      .light {
+        width: 16px;
+        height: 16px;
+        background: linear-gradient(145deg, #90ff90, #4cff4c);
+        border-radius: 50%;
+        position: absolute;
+        box-shadow: 0 0 20px #90ff90, 0 0 30px #76ff76;
+        animation: blink 0.8s infinite alternate;
+      }
+
+      .shine-effect {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 110%;
+        height: 110%;
+        border-radius: 50%;
+        transform-origin: center;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(
+          45deg,
+          transparent 45%,
+          rgba(255, 255, 255, 0.15) 50%,
+          transparent 55%
+        );
+        pointer-events: none;
+        animation: shine 3s infinite linear;
+        mix-blend-mode: overlay;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 20px;
+      }
+
+      button {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        background: linear-gradient(135deg, #e96b24 30%, #ff4500 100%);
+        box-shadow: 0 5px 20px rgba(255, 165, 0, 0.4),
+          0 0 15px rgba(255, 215, 0, 0.3) inset;
+        font-family: "Playfair Display", serif;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 165, 0, 0.6),
+          0 0 20px rgba(255, 215, 0, 0.4) inset;
+      }
+
+      button:disabled {
+        background: linear-gradient(135deg, #666 30%, #444 100%);
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .message {
+        font-size: 20px;
+        color: #fff;
+        margin: 20px 0;
+        text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+        min-height: 40px;
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      @media (min-width: 768px) {
+        .wheel-container {
+          padding: 40px;
+        }
+
+        button {
+          font-size: 22px;
+          padding: 18px 35px;
+        }
+
+        .message {
+          font-size: 26px;
+        }
+      }
+
+      @keyframes logoGlow {
+        from {
+          filter: drop-shadow(0 0 15px rgba(255, 165, 0, 0.5));
+        }
+        to {
+          filter: drop-shadow(0 0 25px rgba(255, 165, 0, 0.8));
+        }
+      }
+
+      @keyframes pointerGlow {
+        from {
+          filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+        }
+        to {
+          filter: drop-shadow(0 0 20px rgba(255, 215, 0, 1));
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0.4;
+          transform: scale(0.9);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1.4);
+        }
+      }
+
+      @keyframes shine {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @keyframes wheelFloat {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(2deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wheel-container">
+      <img class="logo" src="https://i.ibb.co/qFrB7Zp/lo.png" alt="Logo" />
+      <div class="canvas-container">
+        <div class="pointer"></div>
+        <canvas id="wheel"></canvas>
+        <div class="shine-effect"></div>
+      </div>
+      <div class="message" id="message"></div>
+      <div class="buttons">
+        <button id="spin-btn" disabled>Çarkı Çevir</button>
+        <button id="comment-btn">Yorum Yap</button>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("wheel");
+      const container = document.querySelector(".canvas-container");
+      const ctx = canvas.getContext("2d");
+      const messageEl = document.getElementById("message");
+      let hasCommented = false;
+
+      let segments = [
+        { text: "%5", weight: 30 },
+        { text: "Filtre Kahve", weight: 15 },
+        { text: "Americano", weight: 10 },
+        { text: "%15", weight: 12 },
+        { text: "Fincan Çay", weight: 15 },
+        { text: "Fıstıklı Latte", weight: 18 },
+      ];
+
+      const colors = [
+        "#1a5b2d",
+        "#1a5b2d",
+        "#1a5b2d",
+        "#1a5b2d",
+        "#1a5b2d",
+        "#1a5b2d",
+      ];
+      let currentRotation = 0;
+      let isSpinning = false;
+
+      // Her dilimin etrafına ışık yerleştirme
+      function addLights() {
+        const containerWidth = container.offsetWidth;
+        const centerX = containerWidth / 2;
+        const centerY = containerWidth / 2;
+        const radius = containerWidth / 2 + 5;
+
+        container.querySelectorAll(".light").forEach((light) => light.remove());
+
+        for (let i = 0; i < 24; i++) {
+          const angle = (i * 15 * Math.PI) / 180;
+          const x = centerX + radius * Math.cos(angle) - 8;
+          const y = centerY + radius * Math.sin(angle) - 8;
+
+          const light = document.createElement("div");
+          light.className = "light";
+          light.style.left = `${x}px`;
+          light.style.top = `${y}px`;
+          light.style.animationDelay = `${i * 0.04}s`;
+          container.appendChild(light);
+        }
+      }
+
+      // Canvas boyutlandırma ve ölçeklendirme
+      function resizeCanvas() {
+        const containerWidth = container.offsetWidth;
+        const scale = window.devicePixelRatio || 1;
+
+        canvas.width = containerWidth * scale;
+        canvas.height = containerWidth * scale;
+        canvas.style.width = containerWidth + "px";
+        canvas.style.height = containerWidth + "px";
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(scale, scale);
+        drawWheel();
+        addLights();
+      }
+
+      window.addEventListener("load", resizeCanvas);
+      window.addEventListener("resize", resizeCanvas);
+
+      /**
+       * drawCircularText:
+       * Bu fonksiyon, verilen metni bir dilim üzerinde, segmentin merkez açısı etrafında,
+       * harflerin gerçek ölçülerine göre hesaplanan açısal yay boyunca çizdirir.
+       *
+       * @param {CanvasRenderingContext2D} context - Çizim konteksi
+       * @param {string} text - Yazdırılacak metin
+       * @param {number} centerX - Dairenin merkezinin x koordinatı
+       * @param {number} centerY - Dairenin merkezinin y koordinatı
+       * @param {number} radius - Metnin yerleştirileceği yarıçap
+       * @param {number} segmentCenterAngle - Dilimin merkez açısı (radyan)
+       * @param {number} segmentAngle - Dilimin toplam açısı (radyan)
+       */
+      function drawCircularText(
+        context,
+        text,
+        centerX,
+        centerY,
+        radius,
+        segmentCenterAngle,
+        segmentAngle
+      ) {
+        // Font ayarı
+        const fontSize = Math.min(radius * 0.18, 24);
+        context.font = `700 ${fontSize}px 'Playfair Display'`;
+        context.fillStyle = "#ffffff";
+        context.shadowColor = "rgba(0,0,0,0.7)";
+        context.shadowBlur = 4;
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+
+        // Öncelikle tüm metnin toplam genişliğini (piksel cinsinden) ölçüyoruz.
+        const textWidth = context.measureText(text).width;
+        // Bu genişliği, yay üzerindeki açısal genişliğe çeviriyoruz:
+        const totalAngle = textWidth / radius;
+        // Metni segmentin merkezine hizalamak için başlangıç açısı:
+        let currentAngle = segmentCenterAngle - totalAngle / 2;
+
+        // Metindeki her harf için:
+        for (let i = 0; i < text.length; i++) {
+          const letter = text[i];
+          const letterWidth = context.measureText(letter).width;
+          const letterAngle = letterWidth / radius;
+          // Harfin ortası için kullanılacak açıyı belirle:
+          const letterCenterAngle = currentAngle + letterAngle / 2;
+          context.save();
+          // Harfi yay üzerinde yerleştir:
+          context.translate(
+            centerX + Math.cos(letterCenterAngle) * radius,
+            centerY + Math.sin(letterCenterAngle) * radius
+          );
+          // Harfi, konumuna göre döndür:
+          context.rotate(letterCenterAngle + Math.PI / 2);
+          context.fillText(letter, 0, 0);
+          context.restore();
+          currentAngle += letterAngle;
+        }
+      }
+
+      // Çarkı çizme fonksiyonu
+      function drawWheel() {
+        const containerWidth = container.offsetWidth;
+        const centerX = containerWidth / 2;
+        const centerY = containerWidth / 2;
+        const radius = containerWidth * 0.45;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const totalSegments = segments.length;
+        const anglePerSegment = (2 * Math.PI) / totalSegments;
+
+        segments.forEach((segment, i) => {
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          const startAngle = i * anglePerSegment + currentRotation;
+          const endAngle = (i + 1) * anglePerSegment + currentRotation;
+
+          // Radyal gradyan ile renk geçişi
+          const gradient = ctx.createRadialGradient(
+            centerX,
+            centerY,
+            radius * 0.6,
+            centerX,
+            centerY,
+            radius
+          );
+          gradient.addColorStop(0, colors[i] + "ff");
+          gradient.addColorStop(1, colors[i] + "aa");
+
+          ctx.fillStyle = gradient;
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.lineTo(centerX, centerY);
+          ctx.fill();
+
+          // Dilim çizgileri
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+          ctx.stroke();
+
+          // Metalik kenar efekti
+          ctx.beginPath();
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = `hsla(${
+            (i * 360) / segments.length
+          }, 50%, 60%, 0.7)`;
+          ctx.stroke();
+
+          // Metin renderlama: Ölçümlere dayalı yöntemi kullanıyoruz.
+          const textRadius = radius * 0.72;
+          const segmentCenterAngle = startAngle + anglePerSegment / 2;
+          drawCircularText(
+            ctx,
+            segment.text,
+            centerX,
+            centerY,
+            textRadius,
+            segmentCenterAngle,
+            anglePerSegment
+          );
+        });
+
+        // Çarkın ortasına yarı saydam daire
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius * 0.15, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff30";
+        ctx.fill();
+      }
+
+      // Rastgele dilim seçimi (ağırlık bazlı)
+      function getRandomSegment() {
+        const totalWeight = segments.reduce((sum, seg) => sum + seg.weight, 0);
+        let random = Math.random() * totalWeight;
+        return segments.findIndex((seg) => (random -= seg.weight) < 0);
+      }
+
+      // Çarkı döndürme işlemi
+      function spinWheel() {
+        if (isSpinning || !hasCommented) return;
+
+        const today = new Date().toDateString();
+        if (localStorage.getItem("lastSpin") === today) {
+          messageEl.textContent =
+            "Bu çarkı bugün kullandınız, yarın tekrar deneyebilirsiniz.";
+          return;
+        }
+
+        isSpinning = true;
+        document.getElementById("spin-btn").disabled = true;
+
+        const selectedIndex = getRandomSegment();
+        const sliceAngle = (2 * Math.PI) / segments.length;
+        // Hedef dönüş: 5 tam tur atıp, seçili dilimin orta noktasına gelecek şekilde ayarlanıyor.
+        const targetRotation =
+          2 * Math.PI * 5 - (selectedIndex * sliceAngle + sliceAngle / 2);
+        const startRotation = currentRotation;
+        const startTime = performance.now();
+        const spinDuration = 5000;
+
+        function animate(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = elapsed / spinDuration;
+          const easedProgress = Math.pow(progress, 1.7);
+          currentRotation = startRotation + targetRotation * easedProgress;
+
+          drawWheel();
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            isSpinning = false;
+            localStorage.setItem("lastSpin", today);
+            messageEl.textContent = `Kazandığınız ödül: ${segments[selectedIndex].text}`;
+            document.getElementById("spin-btn").disabled = true;
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      // Yorum yap butonuna tıklanınca yorum sayfasını açıp, çarkı kullanıma açar
+      document.getElementById("comment-btn").addEventListener("click", () => {
+        window.open(
+          "https://www.google.com.tr/maps/place/DELL'AMANTE+COFFEE/@40.993577,28.6243261,17z/data=!4m8!3m7!1s0x14b55f08a6acbcdb:0x31db88abde27fe6a!8m2!3d40.993573!4d28.626901!9m1!1b1!16s%2Fg%2F11l2wx8956?hl=tr&entry=ttt&g_ep=EgoyMDI1MDEyOS4xIKXMDSoASAFQAw%3D%3D",
+          "_blank"
+        );
+        hasCommented = true;
+        document.getElementById("spin-btn").disabled = false;
+      });
+
+      document.getElementById("spin-btn").addEventListener("click", spinWheel);
+
+      // Sayfa yüklendiğinde, eğer çark bugün daha önce döndürülmüşse mesaj verilir.
+      const today = new Date().toDateString();
+      if (localStorage.getItem("lastSpin") === today) {
+        messageEl.textContent =
+          "Bu çarkı bugün kullandınız, yarın tekrar deneyebilirsiniz!";
+      }
+
+      // İlk çizim
+      drawWheel();
+    </script>
+  </body>
+</html>
